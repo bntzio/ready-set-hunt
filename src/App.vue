@@ -13,12 +13,12 @@
             button.app__main__checklist__top__form__button(type="submit") OK
           .app__main__checklist__top__progress
         div.app__main__checklist__list
-          div.app__main__checklist__list__content(v-for="item in checklist" v-bind:key="item.id")
-            input.app__main__checklist__list__content__checkbox(v-bind:id="item.id" v-bind:value="item.id" type="checkbox" v-bind:name="item.text")
-            label.app__main__checklist__list__content__item(v-bind:for="item.id") {{ item.text }}
+          item(v-for="item in checklist" v-bind:item="item" v-bind:key="item.id")
 </template>
 
 <script>
+import Item from './components/Item.vue';
+
 export default {
   name: 'app',
   data () {
@@ -47,6 +47,9 @@ export default {
         }
       ]
     }
+  },
+  components: {
+    Item
   },
   methods: {
     submitName() {
@@ -198,30 +201,6 @@ body {
         top: 10px;
         left: 0;
         margin-top: 3rem;
-
-        &__content {
-          margin: .3rem 1.5rem;
-
-          &__checkbox {
-            margin-right: 10px;
-            width: 1.3em;
-            height: 1.3em;
-            background-color: white;
-            border-radius: 50%;
-            vertical-align: middle;
-            border: 1px solid #ddd;
-            -webkit-appearance: none;
-            outline: none;
-            cursor: pointer;
-            
-            &:checked {
-              border: none;
-              background: #E4984A;
-            }
-          }
-
-          &__item {}
-        }
       }
     }
   }
