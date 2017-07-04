@@ -1,22 +1,17 @@
-<template>
-  <div id="app">
-    <img src="./assets/logo.png">
-    <h1></h1>
-    <h2>Essential Links</h2>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank">Forum</a></li>
-      <li><a href="https://gitter.im/vuejs/vue" target="_blank">Gitter Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank">Twitter</a></li>
-    </ul>
-    <h2>Ecosystem</h2>
-    <ul>
-      <li><a href="http://router.vuejs.org/" target="_blank">vue-router</a></li>
-      <li><a href="http://vuex.vuejs.org/" target="_blank">vuex</a></li>
-      <li><a href="http://vue-loader.vuejs.org/" target="_blank">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank">awesome-vue</a></li>
-    </ul>
-  </div>
+<template lang="pug">
+  .app
+    .app__header
+      h1.app__header__title Ready Set Hunt
+      span.app__header__brought Brought to you by @bntzio
+    .app__main
+      .app__main__checklist
+        .app__main__checklist__top
+          form.app__main__checklist__top__form(v-on:submit.prevent="submitName")
+            input.app__main__checklist__top__product(type="text" v-model="productName" v-bind:value="productName" placeholder="Product Name")
+            button.app__main__checklist__top__button(type="submit") OK
+          .app__main__checklist__top__progress
+        ul.app__main__checklist__list(v-for="item in checklist")
+          li.app__main__checklist__list__item {{ item.text }}
 </template>
 
 <script>
@@ -24,37 +19,39 @@ export default {
   name: 'app',
   data () {
     return {
-      msg: 'Welcome to Your Vue.js App'
+      productName: '',
+      checklist: [
+        {
+          id: 1,
+          text: 'Sign up on Product Hunt',
+          completed: false
+        },
+        {
+          id: 2,
+          text: 'Get an invitation',
+          completed: false
+        },
+        {
+          id: 3,
+          text: 'Finish your product',
+          completed: false
+        },
+        {
+          id: 4,
+          text: 'Launch your product',
+          completed: false
+        }
+      ]
+    }
+  },
+  methods: {
+    submitName() {
+      console.log(this.productName);
     }
   }
 }
 </script>
 
 <style lang="scss">
-#app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
-}
-
-h1, h2 {
-  font-weight: normal;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-}
-
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-
-a {
-  color: #42b983;
-}
+// styles here!! 🖌️
 </style>
