@@ -11,9 +11,9 @@
           form.app__main__checklist__top__form(v-on:submit.prevent="submitName")
             input.app__main__checklist__top__form__product(type="text" v-model="productName" v-bind:value="productName" placeholder="Product Name" @click="showButton")
             button.app__main__checklist__top__form__button.animated(type="submit" @click="hideButton") OK
-          .app__main__checklist__top__progress
+          .app__main__checklist__top__progress(v-bind:style="{ width: progressBar + '%' }")
         div.app__main__checklist__list
-          item(v-for="item in checklist" v-bind:item="item" v-bind:key="item.id" @checked="setItem")
+          item(v-for="item in checklist" v-bind:item="item" v-bind:key="item.id" @checked="setItem" @drawProgressBar="handleProgressBar")
 </template>
 
 <script>
@@ -25,7 +25,8 @@ export default {
   data () {
     return {
       productName: '',
-      checklist: this.getChecklist(checklist)
+      checklist: this.getChecklist(checklist),
+      progressBar: this.getProgress(checklist)
     }
   },
   components: {
@@ -48,6 +49,7 @@ export default {
         items.push(item);
         window.localStorage.setItem('items', JSON.stringify(items));
       } else {
+        item.completed = false;
         const items = this.getCheckedItems();
         if (items) {
           const itemToRemove = item.id;
@@ -80,6 +82,33 @@ export default {
         return newChecklist;
       }
       return originalChecklist;
+    },
+    getCompleted(checklist) {
+      const totalItems = checklist.length;
+      let completedItems = 0;
+      checklist.forEach((item) => {
+        if (item.completed) {
+          completedItems += 1;
+        }
+      });
+      return completedItems;
+    },
+    getProgress(checklist) {
+      const totalItems = checklist.length;
+      const completedItems = this.getCompleted(checklist);
+      return (completedItems * 100) / totalItems;
+    },
+    handleProgressBar(status) {
+      const totalItems = this.checklist.length;
+      const completedItems = this.getCompleted(this.checklist);
+
+      if (status) {
+        this.completed = completedItems + 1;
+        this.progressBar = (this.completed * 100) / totalItems;
+      } else {
+        this.completed = completedItems - 1;
+        this.progressBar = (this.completed * 100) / totalItems;
+      }
     },
     showButton() {
       const button = document.getElementsByClassName('app__main__checklist__top__form__button')[0];
@@ -240,6 +269,7 @@ body {
           background: #E4984A;
           background: linear-gradient(50deg, #E4984A, #BB4269);
           width: 100%;
+          transition: .5s ease-in-out width;
         }
       }
 

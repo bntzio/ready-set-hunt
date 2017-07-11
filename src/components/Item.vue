@@ -1,5 +1,5 @@
 <template lang="pug">
-  .app__main__checklist__list__content(v-model="item")
+  .app__main__checklist__list__content
     input.app__main__checklist__list__content__checkbox(v-bind:id="item.id" v-bind:value="item.id" type="checkbox" v-bind:name="item.text" v-bind:checked="item.completed" @change="onchange")
     label.app__main__checklist__list__content__item(v-bind:for="item.id")
       span
@@ -13,6 +13,7 @@ export default {
   props: [ 'item' ],
   methods: {
     onchange(ev) {
+      this.$emit('drawProgressBar', ev.target.checked);
       this.$emit('checked', this.item, ev.target.checked);
       if (ev.target.checked) {
         document.getElementsByClassName('app__main__checklist__list__content')[this.item.id - 1].getElementsByTagName('i')[0].classList.add('marked');
