@@ -143,7 +143,7 @@ body {
 
     &__brought {
       display: none;
-      font-family: 'Proxima N W01 Smbd It';
+      font-family: 'ProximaNW01-AltSmbdIt';
       font-size: .8rem;
 
       @media(min-width: 768px) {
@@ -157,6 +157,7 @@ body {
     justify-content: center;
     color: #333;
     height: 100%;
+    font-family: 'Proxima N W01 At Reg';
 
     &__checklist {
       position: relative;
@@ -165,7 +166,7 @@ body {
       background: white;
       border-radius: 2.7px;
       box-shadow: 10px 10px 45px -3px rgba(0,0,0,0.6);
-      font-family: 'Proxima N W01 Reg';
+      font-family: 'Proxima Nova A W01 Medium';
 
       @media(min-width: 768px) {
         padding: 2rem 15rem;
