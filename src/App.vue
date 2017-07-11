@@ -9,8 +9,8 @@
       .app__main__checklist
         .app__main__checklist__top
           form.app__main__checklist__top__form(v-on:submit.prevent="submitName")
-            input.app__main__checklist__top__form__product(type="text" v-model="productName" v-bind:value="productName" placeholder="Product Name")
-            button.app__main__checklist__top__form__button(type="submit") OK
+            input.app__main__checklist__top__form__product(type="text" v-model="productName" v-bind:value="productName" placeholder="Product Name" @click="showButton")
+            button.app__main__checklist__top__form__button.animated(type="submit" @click="hideButton") OK
           .app__main__checklist__top__progress
         div.app__main__checklist__list
           item(v-for="item in checklist" v-bind:item="item" v-bind:key="item.id" @checked="setItem")
@@ -80,6 +80,23 @@ export default {
         return newChecklist;
       }
       return originalChecklist;
+    },
+    showButton() {
+      const button = document.getElementsByClassName('app__main__checklist__top__form__button')[0];
+      button.style.display = 'block';
+      button.innerHTML = 'OK';
+      if (button.classList.length === 3) {
+        button.classList.remove('bounceOut');
+      }
+      button.classList.add('bounceIn');
+    },
+    hideButton() {
+      const button = document.getElementsByClassName('app__main__checklist__top__form__button')[0];
+      button.innerHTML = '👌';
+      if (button.classList.length === 3) {
+        button.classList.remove('bounceIn');
+      }
+      button.classList.add('bounceOut');
     }
   },
   mounted() {
@@ -173,7 +190,6 @@ body {
       }
 
       &__top {
-        background: peru;
         position: absolute;
         width: 100%;
         top: 0;
@@ -213,6 +229,7 @@ body {
             color: white;
             font-weight: 900;
             cursor: pointer;
+            display: none;
           }
         }
 
