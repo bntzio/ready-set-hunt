@@ -13,39 +13,19 @@
             button.app__main__checklist__top__form__button(type="submit") OK
           .app__main__checklist__top__progress
         div.app__main__checklist__list
-          item(v-for="item in checklist" v-bind:item="item" v-bind:key="item.id")
+          item(v-for="item in checklist" v-bind:item="item" v-bind:key="item.id" @checked="setItem")
 </template>
 
 <script>
 import Item from './components/Item.vue';
+import checklist from './data/';
 
 export default {
   name: 'app',
   data () {
     return {
       productName: '',
-      checklist: [
-        {
-          id: 1,
-          text: 'Sign up on Product Hunt',
-          completed: false
-        },
-        {
-          id: 2,
-          text: 'Get an invitation',
-          completed: false
-        },
-        {
-          id: 3,
-          text: 'Finish your product',
-          completed: false
-        },
-        {
-          id: 4,
-          text: 'Launch your product',
-          completed: false
-        }
-      ]
+      checklist: this.getChecklist(checklist)
     }
   },
   components: {
@@ -53,8 +33,57 @@ export default {
   },
   methods: {
     submitName() {
-      console.log(this.productName);
+      window.localStorage.setItem('productName', JSON.stringify(this.productName));
+    },
+    getProductName() {
+      return JSON.parse(window.localStorage.getItem('productName'));
+    },
+    getCheckedItems() {
+      return JSON.parse(window.localStorage.getItem('items'));
+    },
+    setItem(item, checked) {
+      if (checked) {
+        item.completed = true;
+        let items = this.getCheckedItems() || [];
+        items.push(item);
+        window.localStorage.setItem('items', JSON.stringify(items));
+      } else {
+        const items = this.getCheckedItems();
+        if (items) {
+          const itemToRemove = item.id;
+          let updatedItems = [];
+          items.forEach(function(item) {
+            if (item.id !== itemToRemove) {
+              updatedItems.push(item);
+            }
+          });
+          window.localStorage.setItem('items', JSON.stringify(updatedItems));
+        }
+      }
+    },
+    getChecklist(originalChecklist) {
+      const storedChecklist = this.getCheckedItems();
+      if (storedChecklist) {
+        let storedIds = [];
+        storedChecklist.forEach(item => {
+          storedIds.push(item.id);
+        });
+        let newChecklist = [];
+        originalChecklist.forEach(item => {
+          if (storedIds.includes(item.id)) {
+            item.completed = true;
+            newChecklist.push(item);
+          } else {
+            newChecklist.push(item);
+          }
+        });
+        return newChecklist;
+      }
+      return originalChecklist;
     }
+  },
+  mounted() {
+    this.productName = this.getProductName() || '';
   }
 }
 </script>

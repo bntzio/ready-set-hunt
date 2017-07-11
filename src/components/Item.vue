@@ -1,13 +1,18 @@
 <template lang="pug">
   .app__main__checklist__list__content
-    input.app__main__checklist__list__content__checkbox(v-bind:id="item.id" v-bind:value="item.id" type="checkbox" v-bind:name="item.text")
+    input.app__main__checklist__list__content__checkbox(v-bind:id="item.id" v-bind:value="item.id" type="checkbox" v-bind:name="item.text" v-bind:checked="item.completed" @change="onchange")
     label.app__main__checklist__list__content__item(v-bind:for="item.id") {{ item.text }}
 </template>
 
 <script>
 export default {
   name: 'item',
-  props: [ 'item' ]
+  props: [ 'item' ],
+  methods: {
+    onchange(ev) {
+      this.$emit('checked', this.item, ev.target.checked);
+    }
+  }
 }
 </script>
 
